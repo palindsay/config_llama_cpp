@@ -17,7 +17,6 @@ cmake -B build \
     -DGGML_BLAS=ON \
     -DGGML_BLAS_VENDOR=Apple \
     -DGGML_NATIVE=ON \
-    -DGGML_CPU_KLEIDIAI=ON \
     -DGGML_OPENMP=ON \
     -DGGML_LTO=ON \
     -DCMAKE_C_COMPILER_LAUNCHER=ccache \
