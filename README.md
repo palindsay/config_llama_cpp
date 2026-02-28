@@ -56,17 +56,11 @@ Building `llama.cpp` with the optimal flags for specific high-end or specialized
    ./cmake_llamacpp_macos.sh
 
    # For Linux Multi-GPU setup
-   sudo ./cmakellamacpp.sh
+   ./cmakellamacpp.sh
 
    # For DGX Spark
    sudo ./setup-llamacpp-cuda-dgx-spark.sh
    ```
-
-## Discoverability & SEO Guide
-
-To make this repository more discoverable to users searching for hardware-specific `llama.cpp` builds, consider adding the following **GitHub Topics** (tags) to the repository settings (found via the ⚙️ icon on the main repo page):
-
-`llama-cpp`, `llm-inference`, `cuda`, `rtx-5090`, `rtx-4090`, `nvidia-blackwell`, `dgx-spark`, `apple-silicon`, `metal`, `machine-learning`, `ai`, `gguf`
 
 _Keywords for search visibility:_ llama.cpp optimized build, RTX 5090 llama.cpp, DGX Spark LLM inference, Apple Silicon llama.cpp, CUDA 13.1, Blackwell sm_120a, sm_121, multi-gpu LLM setup.
 
