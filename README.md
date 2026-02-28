@@ -4,7 +4,7 @@
 
 This repository contains a collection of highly optimized, platform-specific build and configuration scripts for [llama.cpp](https://github.com/ggml-org/llama.cpp). The goal is to provide developers, researchers, and AI enthusiasts with out-of-the-box scripts that automatically configure `llama.cpp` to squeeze the maximum performance out of specific hardware setups.
 
-## Value Proposition
+## Purpose of these scripts
 
 Building `llama.cpp` with the optimal flags for specific high-end or specialized hardware can be complex and time-consuming. These scripts solve that problem by:
 
