@@ -18,20 +18,22 @@
 # =============================================================================
 set -euo pipefail
 
-LLAMA_DIR="${LLAMA_DIR:-${HOME}/llama.cpp}"
-BUILD_DIR="${LLAMA_DIR}/build"
-NPROC="$(nproc)"
-
 info()  { printf '\033[0;32m[INFO]\033[0m  %s\n' "$*"; }
 warn()  { printf '\033[0;33m[WARN]\033[0m  %s\n' "$*"; }
 error() { printf '\033[0;31m[ERROR]\033[0m %s\n' "$*" >&2; }
 die()   { error "$@"; exit 1; }
 
-# ── Pre-flight ───────────────────────────────────────────────────────────────
-[[ "$(uname -m)" == "aarch64" ]] || die "Expected aarch64 (DGX Spark). Detected: $(uname -m)"
-[[ $EUID -eq 0 ]] || die "Run with sudo."
+main() {
+    local LLAMA_DIR="${LLAMA_DIR:-${HOME}/llama.cpp}"
+    local BUILD_DIR="${LLAMA_DIR}/build"
+    local NPROC
+    NPROC="$(nproc)"
 
-# ── 1. Install build dependencies ───────────────────────────────────────────
+    # ── Pre-flight ───────────────────────────────────────────────────────────
+    [[ "$(uname -m)" == "aarch64" ]] || die "Expected aarch64 (DGX Spark). Detected: $(uname -m)"
+    [[ $EUID -eq 0 ]] || die "Run with sudo."
+
+    # ── 1. Install build dependencies ───────────────────────────────────────
 # Ref [2]: "sudo apt install -y git cmake build-essential nvtop htop"
 # Ref [1]: OpenSSL for TLS in llama-server; ccache for faster rebuilds
 info "Installing build dependencies..."
@@ -141,3 +143,8 @@ cat <<EOF
     export GGML_CUDA_ENABLE_UNIFIED_MEMORY=1
 
 EOF
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi
