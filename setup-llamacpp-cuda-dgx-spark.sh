@@ -68,8 +68,17 @@ fi
 if ! command -v nvidia-smi &>/dev/null; then
     warn "nvidia-smi not found — cannot verify GPU driver."
 else
-    info "GPU: $(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null | head -1)"
-    info "Driver: $(nvidia-smi --query-gpu=driver_version --format=csv,noheader 2>/dev/null | head -1)"
+    # Query GPU name and driver version in a single call to minimize overhead
+    GPU_INFO="$(nvidia-smi --query-gpu=name,driver_version --format=csv,noheader 2>/dev/null | head -1)"
+    GPU_NAME="${GPU_INFO%%,*}"
+    GPU_DRIVER="${GPU_INFO#*,}"
+    # Pure bash trim of leading/trailing spaces
+    GPU_NAME="${GPU_NAME#"${GPU_NAME%%[![:space:]]*}"}"
+    GPU_NAME="${GPU_NAME%"${GPU_NAME##*[![:space:]]}"}"
+    GPU_DRIVER="${GPU_DRIVER#"${GPU_DRIVER%%[![:space:]]*}"}"
+    GPU_DRIVER="${GPU_DRIVER%"${GPU_DRIVER##*[![:space:]]}"}"
+    info "GPU: ${GPU_NAME}"
+    info "Driver: ${GPU_DRIVER}"
 fi
 
 # ── 3. Clone llama.cpp ──────────────────────────────────────────────────────
