@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Optimized llama.cpp build for multi-GPU setup:
 #   GPU 0: RTX 5090 (sm_120a, Blackwell, 32GB) - FP4/MXFP4 tensor cores
@@ -31,6 +31,8 @@
 
 set -euo pipefail
 
+NPROC="$(nproc)"
+
 # ─── Install build dependencies ─────────────────────────────────────────────
 
 echo "==> Checking and installing build dependencies..."
@@ -52,7 +54,7 @@ sudo apt-get install -y --no-install-recommends \
 # ─── Clean stale build artifacts ────────────────────────────────────────────
 
 echo "==> Cleaning previous build..."
-rm -rf build
+[[ -d build ]] && rm -rf build
 
 # ─── Configure ──────────────────────────────────────────────────────────────
 
@@ -81,8 +83,8 @@ cmake -B build \
 # ─── Build ──────────────────────────────────────────────────────────────────
 
 echo ""
-echo "==> Building with $(nproc) parallel jobs..."
-cmake --build build -j$(nproc)
+echo "==> Building with ${NPROC} parallel jobs..."
+cmake --build build -j"${NPROC}"
 
 echo ""
 echo "==> Build complete. Binaries are in build/bin/"
