@@ -27,6 +27,7 @@ warn()  { printf '\033[0;33m[WARN]\033[0m  %s\n' "$*"; }
 error() { printf '\033[0;31m[ERROR]\033[0m %s\n' "$*" >&2; }
 die()   { error "$@"; exit 1; }
 
+main() {
 # ── Pre-flight ───────────────────────────────────────────────────────────────
 [[ "$(uname -m)" == "aarch64" ]] || die "Expected aarch64 (DGX Spark). Detected: $(uname -m)"
 [[ $EUID -eq 0 ]] || die "Run with sudo."
@@ -150,3 +151,8 @@ cat <<EOF
     export GGML_CUDA_ENABLE_UNIFIED_MEMORY=1
 
 EOF
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi
