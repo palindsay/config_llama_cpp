@@ -60,6 +60,7 @@ IFS=$'\n\t'
 # ---------------------------------------------------------------------------
 LLAMA_BIN_DIR="${LLAMA_BIN_DIR:-}"
 LLAMA_CPP_DIR="${LLAMA_CPP_DIR:-${HOME}/llama.cpp}"  # source tree for 'build' cmd
+LLAMA_VERSION="${LLAMA_VERSION:-b4300}"              # pinned version for security
 MODELS_DIR="${MODELS_DIR:-${HOME}/models/qwen35-122b}"
 BUILD_JOBS="${BUILD_JOBS:-$(nproc)}"
 
@@ -367,13 +368,14 @@ build_llama_cpp() {
         log_info "Updating existing llama.cpp source tree..."
         cd "${LLAMA_CPP_DIR}"
         git fetch --all --prune
-        git reset --hard origin/master
-        git pull origin master
     else
         log_info "Cloning llama.cpp..."
         git clone https://github.com/ggml-org/llama.cpp "${LLAMA_CPP_DIR}"
         cd "${LLAMA_CPP_DIR}"
     fi
+
+    log_info "Checking out version ${LLAMA_VERSION}..."
+    git checkout "${LLAMA_VERSION}"
 
     local COMMIT_HASH
     COMMIT_HASH=$(git rev-parse --short HEAD)
