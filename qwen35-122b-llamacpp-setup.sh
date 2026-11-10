@@ -159,7 +159,6 @@ log_cmd_and_exec() {
 LLAMA_SERVER=""
 LLAMA_CLI=""
 LLAMA_BENCH=""
-LLAMA_GGUF_SPLIT=""
 
 _resolve_one_binary() {
     local name="$1"
@@ -189,7 +188,6 @@ resolve_binaries() {
     LLAMA_SERVER=$(_resolve_one_binary llama-server) || true
     LLAMA_CLI=$(_resolve_one_binary llama-cli) || true
     LLAMA_BENCH=$(_resolve_one_binary llama-bench) || true
-    LLAMA_GGUF_SPLIT=$(_resolve_one_binary llama-gguf-split) || true
 
     if [[ -n "${LLAMA_SERVER}" ]]; then
         local resolved_dir
