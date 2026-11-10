@@ -97,6 +97,7 @@ UBATCH_SIZE=4096
 
 # Server port
 SERVER_PORT=8080
+SERVER_HOST="${SERVER_HOST:-127.0.0.1}"
 
 # ===========================================================================
 # Color helpers
@@ -592,6 +593,7 @@ run_server() {
     log_info "Main GPU:     ${MAIN_GPU} (RTX 4090D — largest VRAM)"
     log_info "Context:      ${CTX_SIZE} tokens"
     log_info "Threads:      ${THREADS}"
+    log_info "Host:         ${SERVER_HOST}"
     log_info "Port:         ${SERVER_PORT}"
 
     # -----------------------------------------------------------------------
@@ -620,7 +622,7 @@ run_server() {
         "${LLAMA_SERVER}"
         --model "${MODEL_FILE}"
         --port "${SERVER_PORT}"
-        --host 0.0.0.0
+        --host "${SERVER_HOST}"
         --gpu-layers 999
         --tensor-split "${TENSOR_SPLIT}"
         --main-gpu "${MAIN_GPU}"
