@@ -123,22 +123,18 @@ log_cmd_and_exec() {
     echo ""
     echo -e "${CYAN}${BOLD}──── Command ────${NC}"
     # Print binary on first line, each subsequent arg indented with backslash
-    local i=0
-    local last_idx=$(( ${#_cmd_ref[@]} - 1 ))
-    for arg in "${_cmd_ref[@]}"; do
-        if [[ $i -eq 0 ]]; then
-            if [[ $i -eq $last_idx ]]; then
-                printf '%s\n' "$arg"
-            else
-                printf '%s \\\n' "$arg"
-            fi
-        elif [[ $i -eq $last_idx ]]; then
-            printf '    %s\n' "$arg"
+    local count=${#_cmd_ref[@]}
+    if (( count > 0 )); then
+        if (( count == 1 )); then
+            printf '%s\n' "${_cmd_ref[0]}"
         else
-            printf '    %s \\\n' "$arg"
+            printf '%s \\\n' "${_cmd_ref[0]}"
+            if (( count > 2 )); then
+                printf '    %s \\\n' "${_cmd_ref[@]:1:count-2}"
+            fi
+            printf '    %s\n' "${_cmd_ref[-1]}"
         fi
-        i=$(( i + 1 ))
-    done
+    fi
     echo -e "${CYAN}${BOLD}─────────────────${NC}"
     echo ""
 
