@@ -21,6 +21,7 @@ set -euo pipefail
 LLAMA_DIR="${LLAMA_DIR:-${HOME}/llama.cpp}"
 BUILD_DIR="${LLAMA_DIR}/build"
 NPROC="$(nproc)"
+LLAMA_VERSION="${LLAMA_VERSION:-b4300}"
 
 info()  { printf '\033[0;32m[INFO]\033[0m  %s\n' "$*"; }
 warn()  { printf '\033[0;33m[WARN]\033[0m  %s\n' "$*"; }
@@ -84,11 +85,13 @@ fi
 # ── 3. Clone llama.cpp ──────────────────────────────────────────────────────
 # Ref [1]: "git clone https://github.com/ggml-org/llama.cpp.git"
 if [[ -d "${LLAMA_DIR}/.git" ]]; then
-    info "llama.cpp already cloned at ${LLAMA_DIR} — pulling latest..."
-    git -C "${LLAMA_DIR}" pull --ff-only
+    info "llama.cpp already cloned at ${LLAMA_DIR} — checking out ${LLAMA_VERSION}..."
+    git -C "${LLAMA_DIR}" fetch origin
+    git -C "${LLAMA_DIR}" checkout "${LLAMA_VERSION}"
 else
     info "Cloning llama.cpp into ${LLAMA_DIR}..."
     git clone https://github.com/ggml-org/llama.cpp.git "${LLAMA_DIR}"
+    git -C "${LLAMA_DIR}" checkout "${LLAMA_VERSION}"
 fi
 
 # ── 4. CMake configure — CUDA-optimized for DGX Spark ───────────────────────
